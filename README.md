@@ -1,95 +1,84 @@
 # FurryFriends Fotos
 
-A pet photo sharing social platform built on Microsoft Azure.
+A simple pet photo sharing web app built with Flask and deployed on Azure.
 
-## 🎯 Project Overview
+## About This Project
 
-FurryFriends Fotos is a cloud-based web application that allows users to share photos of their pets. This project demonstrates cloud architecture design and deployment skills using Azure services.
+This is a course project for HDDS2401 Cloud Services and Architectures. It's basically a social platform where users can upload photos of their pets and view other people's pet photos. The main focus is on cloud deployment and architecture design.
 
-## 🏗️ Architecture
+## What It Does
 
-- **Hosting**: Azure App Service (PaaS)
-- **Database**: Azure Database for PostgreSQL
-- **Storage**: Azure Blob Storage (originals + thumbnails)
-- **Functions**: Azure Functions (thumbnail generation)
-- **Network**: Azure Virtual Network with NSG
-- **CI/CD**: GitHub Actions
+- Users can register and login
+- Upload pet photos
+- Automatically generates thumbnails for each photo
+- Browse all photos in a public gallery
 
-## 🚀 Features
+## Tech Stack
 
-- User registration and authentication
-- Photo upload with automatic thumbnail generation
-- Public photo gallery
-- Secure cloud storage
+Backend:
+- Python 3.11 + Flask
+- PostgreSQL database
+- SQLAlchemy for database stuff
 
-## 💻 Tech Stack
+Frontend:
+- Bootstrap for styling
+- Jinja2 templates
 
-**Backend:**
-- Python 3.11
-- Flask 3.0
-- SQLAlchemy
-- Flask-Login
+Azure Services:
+- App Service (hosting the web app)
+- PostgreSQL (database)
+- Blob Storage (storing images)
+- Functions (auto thumbnail generation)
+- VNet and NSG (network security)
 
-**Frontend:**
-- Bootstrap 5
-- Jinja2 Templates
+CI/CD:
+- GitHub Actions for automatic deployment
 
-**Cloud Services:**
-- Azure App Service
-- Azure PostgreSQL
-- Azure Blob Storage
-- Azure Functions
-- Azure VNet & NSG
+## Setup Instructions
 
-## 📦 Installation
+### Running Locally
 
-### Prerequisites
-- Python 3.11+
-- Azure Account
-- Git
-
-### Local Development
-
-1. Clone the repository:
+1. Clone the repo
 ```bash
-git clone <repository-url>
+git clone https://github.com/w1219599075-lang/furryfriends-fotos.git
 cd furryfriends-fotos
 ```
 
-2. Create virtual environment:
+2. Create virtual environment and install dependencies
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Configure environment variables:
+3. Set up environment variables
 ```bash
 cp .env.example .env
-# Edit .env with your configuration
+# then edit .env with your Azure credentials
 ```
 
-5. Run the application:
+4. Run the app
 ```bash
 python app.py
 ```
 
-6. Access at `http://localhost:5000`
+Visit http://localhost:5000 to see it running.
 
-## 🌐 Deployment
+### Deploying to Azure
 
-The application is automatically deployed to Azure App Service via GitHub Actions when code is pushed to the main branch.
+The deployment is automated through GitHub Actions. Just push to the master branch and it will automatically deploy to Azure App Service.
 
-## 📝 License
+You'll need to configure:
+- Azure App Service
+- PostgreSQL database
+- Blob Storage account
+- Azure Function for thumbnails
+- GitHub secrets for deployment
 
-This project is created for HDDS2401 Cloud Services and Architectures course assignment.
+(Detailed steps will be added later)
 
-## 👥 Author
+## Course Info
 
-- Student ID: [Your ID]
 - Course: HDDS2401 Cloud Services and Architectures
 - Semester: 2025 S1
+- Assignment: Group Project (40% of final grade)
