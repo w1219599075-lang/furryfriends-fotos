@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - FurryFriends{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">🐾 欢迎来到 FurryFriends Fotos</h1>
+    <p class="lead">分享你家毛孩子的可爱瞬间</p>
+    
+    {% if current_user.is_authenticated %}
+        <p class="text-success">✅ 你已登录为: {{ current_user.username }}</p>
+        <a href="/logout" class="btn btn-outline-danger">退出登录</a>
+    {% else %}
+        <div class="mt-4">
+            <a href="/register" class="btn btn-primary btn-lg me-2">立即注册</a>
+            <a href="/login" class="btn btn-outline-primary btn-lg">登录</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
