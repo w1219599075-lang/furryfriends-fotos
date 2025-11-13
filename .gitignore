@@ -38,5 +38,8 @@ local.settings.json
 *.db
 *.sqlite3
 
+# Test scripts (local only)
+scripts/
+
 # Project documentation (local only)
 docs/
