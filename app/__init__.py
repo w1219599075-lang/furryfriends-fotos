@@ -3,38 +3,43 @@ from flask_login import LoginManager
 from app.config import Config
 from app.models import db, User
 
-# 初始化 Flask-Login
+# init Flask-Login
 login_manager = LoginManager()
 
 def create_app(config_class=Config):
-    """应用工厂函数 - 创建并配置 Flask 应用"""
-    
-    # 创建 Flask 应用实例
+    """App factory - create and configure Flask app"""
+
+    # create Flask app instance
     app = Flask(__name__)
-    
-    # 加载配置
+
+    # load config
     app.config.from_object(config_class)
-    
-    # 初始化数据库
+
+    # init database
     db.init_app(app)
-    
-    # 初始化登录管理器
+
+    # init login manager
     login_manager.init_app(app)
-    login_manager.login_view = 'login'  # 未登录时重定向到登录页
-    login_manager.login_message = '请先登录'
-    
-    # 创建数据库表
+    login_manager.login_view = 'login'  # redirect to login if not authenticated
+    login_manager.login_message = 'Please log in first'
+
+    # create database tables
     with app.app_context():
         db.create_all()
-    
-    # 注册路由
+
+    # register routes
     from app.routes import register_routes
     register_routes(app)
-    
+
     return app
 
 @login_manager.user_loader
 def load_user(user_id):
-    """Flask-Login 需要的用户加载函数"""
-    return User.query.get(int(user_id))
+    """User loader function required by Flask-Login"""
+    try:
+        return User.query.get(int(user_id))
+    except Exception as e:
+        # Log the error and return None to handle database connection issues gracefully
+        print(f"Error loading user {user_id}: {str(e)}")
+        return None
 

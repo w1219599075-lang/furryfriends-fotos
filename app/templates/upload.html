@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login - FurryFriends{% endblock %}
+{% block title %}Upload Photo - FurryFriends{% endblock %}
 
 {% block content %}
 <style>
@@ -18,7 +18,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         padding: 2.5rem;
         width: 100%;
-        max-width: 420px;
+        max-width: 500px;
     }
 
     .form-title {
@@ -57,10 +57,60 @@
         background: white;
     }
 
+    .form-file {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        background: #fafafa;
+        cursor: pointer;
+    }
+
+    .form-file::-webkit-file-upload-button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        background: var(--primary-color);
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        margin-right: 1rem;
+    }
+
+    .form-file::-webkit-file-upload-button:hover {
+        background: var(--primary-hover);
+    }
+
+    .form-hint {
+        font-size: 0.85rem;
+        color: #888;
+        margin-top: 0.5rem;
+    }
+
     .form-error {
         color: #dc3545;
         font-size: 0.85rem;
         margin-top: 0.5rem;
+    }
+
+    .form-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        transition: all 0.2s;
+        background: #fafafa;
+        resize: vertical;
+        min-height: 100px;
+        font-family: inherit;
+    }
+
+    .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
     }
 
     .form-submit {
@@ -103,29 +153,32 @@
 
 <div class="form-container">
     <div class="form-card">
-        <h2 class="form-title">Login</h2>
+        <h2 class="form-title">Upload Pet Photo</h2>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
 
             <div class="form-group">
-                {{ form.username.label(class="form-label") }}
-                {{ form.username(class="form-input") }}
-                {% if form.username.errors %}
+                {{ form.image.label(class="form-label") }}
+                {{ form.image(class="form-file") }}
+                {% if form.image.errors %}
                     <div class="form-error">
-                        {% for error in form.username.errors %}
+                        {% for error in form.image.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
                 {% endif %}
+                <div class="form-hint">
+                    Supported formats: PNG, JPG, GIF, WebP (Max 16MB)
+                </div>
             </div>
 
             <div class="form-group">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-input") }}
-                {% if form.password.errors %}
+                {{ form.caption.label(class="form-label") }}
+                {{ form.caption(class="form-textarea", placeholder="Tell us about your furry friend...") }}
+                {% if form.caption.errors %}
                     <div class="form-error">
-                        {% for error in form.password.errors %}
+                        {% for error in form.caption.errors %}
                             {{ error }}
                         {% endfor %}
                     </div>
@@ -136,9 +189,8 @@
         </form>
 
         <div class="form-footer">
-            Don't have an account? <a href="/register">Sign up</a>
+            <a href="/gallery">View Gallery</a>
         </div>
     </div>
 </div>
 {% endblock %}
-
