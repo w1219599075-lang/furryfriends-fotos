@@ -85,22 +85,18 @@ def register_routes(app):
 
         if form.validate_on_submit():
             try:
-                # 获取上传的文件
                 file = form.image.data
 
-                # 检查文件扩展名
                 if not allowed_file(file.filename):
                     flash('Invalid file type. Only PNG, JPG, GIF, WebP are allowed.', 'danger')
                     return redirect(url_for('upload'))
 
-                # 初始化 Blob Storage 服务
                 blob_service = BlobStorageService(
                     connection_string=current_app.config['AZURE_STORAGE_CONNECTION_STRING'],
                     container_original=current_app.config['AZURE_STORAGE_CONTAINER_ORIGINAL'],
                     container_thumbnail=current_app.config['AZURE_STORAGE_CONTAINER_THUMBNAIL']
                 )
 
-                # 上传文件到 Azure Blob Storage
                 result = blob_service.upload_file(
                     file_stream=file.stream,
                     original_filename=file.filename,
@@ -108,10 +104,8 @@ def register_routes(app):
                 )
 
                 if result['success']:
-                    # 生成带SAS令牌的URL
                     download_url = blob_service.generate_download_url(result['blob_name'])
 
-                    # 保存图片信息到数据库
                     new_image = Image(
                         caption=form.caption.data or '',
                         original_url=download_url,
@@ -134,10 +128,8 @@ def register_routes(app):
     @app.route('/gallery')
     def gallery():
         """Public gallery page"""
-        # 查询所有图片，按上传时间倒序
         images = Image.query.order_by(Image.upload_date.desc()).all()
 
-        # 为每张图片添加缩略图URL（如果存在）
         blob_service = BlobStorageService(
             connection_string=current_app.config['AZURE_STORAGE_CONNECTION_STRING'],
             container_original=current_app.config['AZURE_STORAGE_CONTAINER_ORIGINAL'],
@@ -145,9 +137,7 @@ def register_routes(app):
         )
 
         for image in images:
-            # 从原图URL中提取blob名称
             if image.original_url:
-                # URL格式: https://<account>.blob.core.windows.net/<container>/<blob_name>?<sas>
                 blob_name = image.original_url.split('/')[-1].split('?')[0]
                 thumbnail_url = blob_service.get_thumbnail_url(blob_name)
                 image.thumbnail_url = thumbnail_url or image.original_url

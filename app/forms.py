@@ -27,7 +27,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
     
     def validate_username(self, username):
-        """Custom validation: Check if username already exists"""
+        """Check if username exists"""
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('This username is already taken')
