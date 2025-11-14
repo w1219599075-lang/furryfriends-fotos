@@ -54,6 +54,7 @@ def register_routes(app):
             # Verify username and password
             if user and user.check_password(form.password.data):
                 login_user(user)
+                flash(f'Welcome back, {user.username}!', 'success')
 
                 # After successful login, redirect to previous page or gallery
                 next_page = request.args.get('next')
@@ -152,4 +153,3 @@ def register_routes(app):
                 image.thumbnail_url = thumbnail_url or image.original_url
 
         return render_template('gallery.html', images=images)
-

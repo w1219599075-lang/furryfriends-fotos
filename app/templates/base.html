@@ -53,85 +53,62 @@
         }
 
         /* Toast styles */
-        .toast-container {
+        .flash-toast-container {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 1.5rem;
+            right: 1.5rem;
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            max-width: 400px;
+            gap: 0.6rem;
+            max-width: 360px;
         }
 
-        .toast {
+        .flash-toast {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem 1.25rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 0.9rem 1.15rem;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(15, 23, 42, 0.05);
             animation: slideIn 0.3s ease-out;
-            border-left: 4px solid;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 1;
         }
 
-        .toast-success {
-            border-left-color: #28a745;
-        }
-
-        .toast-danger {
-            border-left-color: #dc3545;
-        }
-
-        .toast-info {
-            border-left-color: #17a2b8;
-        }
-
-        .toast-warning {
-            border-left-color: #ffc107;
-        }
-
-        .toast-content {
+        .flash-toast-content {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
             flex: 1;
         }
 
-        .toast-icon {
-            font-size: 1.25rem;
-            font-weight: bold;
-            line-height: 1;
+        .flash-toast-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+            flex-shrink: 0;
         }
 
-        .toast-success .toast-icon {
-            color: #28a745;
+        .flash-toast-message {
+            font-size: 0.92rem;
+            color: #1f2933;
+            line-height: 1.35;
         }
 
-        .toast-danger .toast-icon {
-            color: #dc3545;
-        }
-
-        .toast-info .toast-icon {
-            color: #17a2b8;
-        }
-
-        .toast-warning .toast-icon {
-            color: #ffc107;
-        }
-
-        .toast-message {
-            font-size: 0.95rem;
-            color: #333;
-            line-height: 1.4;
-        }
-
-        .toast-close {
+        .flash-toast-close {
             background: none;
             border: none;
-            color: #999;
-            font-size: 1.5rem;
+            color: #94a3b8;
+            font-size: 1.3rem;
             line-height: 1;
             cursor: pointer;
             padding: 0;
@@ -144,8 +121,28 @@
             transition: color 0.2s;
         }
 
-        .toast-close:hover {
-            color: #666;
+        .flash-toast-close:hover {
+            color: #64748b;
+        }
+
+        .flash-toast-success .flash-toast-icon {
+            background: rgba(40, 167, 69, 0.16);
+            color: #1f8a3c;
+        }
+
+        .flash-toast-danger .flash-toast-icon {
+            background: rgba(220, 53, 69, 0.16);
+            color: #b42334;
+        }
+
+        .flash-toast-info .flash-toast-icon {
+            background: rgba(23, 162, 184, 0.16);
+            color: #14748a;
+        }
+
+        .flash-toast-warning .flash-toast-icon {
+            background: rgba(255, 193, 7, 0.2);
+            color: #b27c00;
         }
 
         @keyframes slideIn {
@@ -170,12 +167,12 @@
             }
         }
 
-        .toast.hiding {
+        .flash-toast.hiding {
             animation: slideOut 0.3s ease-out forwards;
         }
 
         @media (max-width: 768px) {
-            .toast-container {
+            .flash-toast-container {
                 bottom: 1rem;
                 right: 1rem;
                 left: 1rem;
@@ -247,18 +244,18 @@
     </nav>
 
     <!-- flash messages as toast -->
-    <div class="toast-container">
+    <div class="flash-toast-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="toast toast-{{ category }}" data-auto-hide="true">
-                        <div class="toast-content">
-                            <span class="toast-icon">
+                    <div class="flash-toast flash-toast-{{ category }}" data-auto-hide="true">
+                        <div class="flash-toast-content">
+                            <span class="flash-toast-icon">
                                 {% if category == 'success' %}✓{% elif category == 'danger' %}✕{% elif category == 'info' %}ℹ{% else %}!{% endif %}
                             </span>
-                            <span class="toast-message">{{ message }}</span>
+                            <span class="flash-toast-message">{{ message }}</span>
                         </div>
-                        <button type="button" class="toast-close" onclick="this.parentElement.remove()">×</button>
+                        <button type="button" class="flash-toast-close" onclick="this.parentElement.remove()">×</button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -275,7 +272,7 @@
     <script>
         // Auto-hide toast messages after 5 seconds
         document.addEventListener('DOMContentLoaded', function() {
-            const toasts = document.querySelectorAll('.toast[data-auto-hide="true"]');
+            const toasts = document.querySelectorAll('.flash-toast[data-auto-hide="true"]');
 
             toasts.forEach(function(toast) {
                 setTimeout(function() {
@@ -286,10 +283,9 @@
                     setTimeout(function() {
                         toast.remove();
                     }, 300);
-                }, 5000);
+                }, 8000);
             });
         });
     </script>
 </body>
 </html>
-
