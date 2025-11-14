@@ -33,6 +33,11 @@ def create_app(config_class=Config):
 
     return app
 
+
+# expose a module-level `app` instance so hosts expecting `app:app` (e.g. Azure)
+# can locate the Flask application without a custom startup command.
+app = create_app()
+
 @login_manager.user_loader
 def load_user(user_id):
     """User loader function required by Flask-Login"""
@@ -42,4 +47,3 @@ def load_user(user_id):
         # Log the error and return None to handle database connection issues gracefully
         print(f"Error loading user {user_id}: {str(e)}")
         return None
-
