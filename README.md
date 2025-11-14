@@ -76,6 +76,10 @@ You'll need to configure:
 - GitHub secrets for deployment
 
 
+## Deployment
+
+Live demo: https://app-furryfriends-ajhqaub7e5djdrep.uksouth-01.azurewebsites.net
+
 ## Course Info
 
 - Course: HDDS2401 Cloud Services and Architectures
