@@ -246,7 +246,7 @@
                 </div>
                 <a href="javascript:void(0);"
                    class="photo-link"
-                   onclick="openModal('{{ image.original_url }}', '{{ image.caption or 'Pet photo' }}')">
+                   onclick='openModal({{ image.original_url | tojson }}, {{ (image.caption or "Pet photo") | tojson }})'>
                     View
                 </a>
             </div>

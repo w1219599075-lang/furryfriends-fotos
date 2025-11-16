@@ -34,8 +34,7 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     caption = db.Column(db.String(200))
-    original_url = db.Column(db.String(500), nullable=False)
-    thumbnail_url = db.Column(db.String(500))
+    blob_name = db.Column(db.String(200), nullable=False)  # Store blob filename only
     upload_date = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 

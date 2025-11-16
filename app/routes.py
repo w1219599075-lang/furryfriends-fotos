@@ -104,11 +104,9 @@ def register_routes(app):
                 )
 
                 if result['success']:
-                    download_url = blob_service.generate_download_url(result['blob_name'])
-
                     new_image = Image(
                         caption=form.caption.data or '',
-                        original_url=download_url,
+                        blob_name=result['blob_name'],
                         user_id=current_user.id
                     )
                     db.session.add(new_image)
@@ -136,10 +134,15 @@ def register_routes(app):
             container_thumbnail=current_app.config['AZURE_STORAGE_CONTAINER_THUMBNAIL']
         )
 
+        # Generate fresh URLs with new SAS tokens for each image
         for image in images:
-            if image.original_url:
-                blob_name = image.original_url.split('/')[-1].split('?')[0]
-                thumbnail_url = blob_service.get_thumbnail_url(blob_name)
-                image.thumbnail_url = thumbnail_url or image.original_url
+            # Get thumbnail URL (returns None if not exists)
+            thumbnail_url = blob_service.get_thumbnail_url(image.blob_name)
+            # Generate original URL
+            original_url = blob_service.generate_download_url(image.blob_name)
+
+            # Set temporary attributes for template rendering
+            image.thumbnail_url = thumbnail_url or original_url
+            image.original_url = original_url
 
         return render_template('gallery.html', images=images)
